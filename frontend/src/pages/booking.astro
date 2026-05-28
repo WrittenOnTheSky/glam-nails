@@ -1,0 +1,121 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BookingPage from '../components/BookingPage.jsx';
+
+// Backend API URL - can be configured via environment variable
+const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001';
+---
+
+<Layout title="Онлайн-запись" description="Запишитесь онлайн на услуги маникюрного салона GLAM nails">
+  <section class="page-header">
+    <div class="container">
+      <h1>Онлайн-запись</h1>
+      <p>Быстро и удобно запишитесь на нужную услугу</p>
+    </div>
+  </section>
+
+  <section class="section booking-section">
+    <div class="container">
+      <BookingPage apiBaseUrl={API_BASE_URL} client:load />
+    </div>
+  </section>
+
+  <section class="section info-section">
+    <div class="container">
+      <div class="info-cards">
+        <div class="info-card">
+          <span class="info-icon">💡</span>
+          <h4>Важно знать</h4>
+          <ul>
+            <li>Запись доступна с 10:00 до 19:00</li>
+            <li>Опоздание более 15 минут — отмена записи</li>
+            <li>Отмена возможна за 2 часа до визита</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <span class="info-icon">🎁</span>
+          <h4>Первый визит</h4>
+          <ul>
+            <li>Скидка 10% на первый визит</li>
+            <li>Бесплатная консультация</li>
+            <li>Пробный дизайн ногтей</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    padding: 140px 24px 60px;
+    background: linear-gradient(135deg, var(--color-bg) 0%, #FFE4EF 100%);
+    text-align: center;
+  }
+
+  .page-header h1 {
+    font-size: 3rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 16px;
+  }
+
+  .page-header p {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+  }
+
+  .booking-section {
+    background: linear-gradient(135deg, var(--color-bg) 0%, #FFE4EF 100%);
+  }
+
+  .info-section {
+    background: white;
+  }
+
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .info-card {
+    background: var(--color-bg);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    text-align: center;
+  }
+
+  .info-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .info-card h4 {
+    font-size: 1.3rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 20px;
+  }
+
+  .info-card ul {
+    list-style: none;
+    text-align: left;
+  }
+
+  .info-card li {
+    padding: 10px 0;
+    padding-left: 24px;
+    position: relative;
+    color: var(--color-text-light);
+  }
+
+  .info-card li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+</style>

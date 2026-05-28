@@ -1,0 +1,664 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Салон маникюра премиум-класса. Запишитесь онлайн на лучшие услуги по уходу за ногтями." } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <title>{title} | GLAM nails</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav container">
+      <a href="/" class="logo">GLAM<span>nails</span></a>
+      <ul class="nav-links">
+        <li><a href="/">Главная</a></li>
+        <li><a href="/services">Услуги</a></li>
+        <li><a href="/price">Прайс-лист</a></li>
+        <li><a href="/gallery">Галерея</a></li>
+        <li><a href="/contacts">Контакты</a></li>
+      </ul>
+      <a href="/booking" class="btn-book">Записаться</a>
+      <button class="mobile-menu-btn" aria-label="Меню">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <span class="logo">GLAM<span>nails</span></span>
+          <p>Салон маникюра премиум-класса в самом сердце города</p>
+        </div>
+        <div class="footer-info">
+          <h4>Контакты</h4>
+          <p>📍 ул. Красивая, 15</p>
+          <p>📞 +7 (999) 123-45-67</p>
+          <p>🕐 10:00 - 20:00</p>
+        </div>
+        <div class="footer-links">
+          <h4>Навигация</h4>
+          <a href="/services">Услуги</a>
+          <a href="/price">Прайс-лист</a>
+          <a href="/gallery">Галерея</a>
+          <a href="/booking">Онлайн-запись</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 GLAM nails. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style is:global>
+  :root {
+    --color-primary: #FF69B4;
+    --color-primary-dark: #E91E8C;
+    --color-gold: #FFD700;
+    --color-gold-light: #FFF3B0;
+    --color-white: #FFFFFF;
+    --color-bg: #FFF5F8;
+    --color-text: #2D2D2D;
+    --color-text-light: #666666;
+    --font-heading: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Montserrat', -apple-system, sans-serif;
+    --shadow-sm: 0 2px 8px rgba(255, 105, 180, 0.1);
+    --shadow-md: 0 4px 20px rgba(255, 105, 180, 0.15);
+    --shadow-lg: 0 8px 40px rgba(255, 105, 180, 0.2);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--color-text);
+    background: var(--color-bg);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Header */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .logo span {
+    color: var(--color-gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text);
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-gold));
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+    /* Buttons */
+  .btn-book {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: var(--color-white);
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+  }
+
+  .btn-book:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .mobile-menu-btn span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-text);
+    transition: all 0.3s ease;
+  }
+
+  /* Hero Section */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    background: linear-gradient(135deg, var(--color-bg) 0%, #FFE4EF 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 105, 180, 0.15) 0%, transparent 70%);
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    animation: float 10s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(5deg); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+  }
+
+  .hero h1 {
+    font-size: 4rem;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary), var(--color-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.1); }
+  }
+
+  .hero p {
+    font-size: 1.3rem;
+    color: var(--color-text-light);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: var(--color-white);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-secondary {
+    background: var(--color-white);
+    color: var(--color-primary-dark);
+    border: 2px solid var(--color-primary);
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+    transform: translateY(-3px);
+  }
+
+  /* Section Styles */
+  .section {
+    padding: 100px 24px;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-header h2 {
+    font-size: 3rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 16px;
+  }
+
+  .section-header p {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Services Grid */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .service-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .service-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .service-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--color-bg), #FFE4EF);
+    border-radius: 50%;
+  }
+
+  .service-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    color: var(--color-primary-dark);
+  }
+
+  .service-card p {
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+
+  .service-price {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-gold);
+  }
+
+  /* Price Table */
+  .price-table {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 30px;
+    border-bottom: 1px solid rgba(255, 105, 180, 0.1);
+    transition: background 0.3s ease;
+  }
+
+  .price-row:hover {
+    background: var(--color-bg);
+  }
+
+  .price-row:last-child {
+    border-bottom: none;
+  }
+
+  .price-row .service-name {
+    font-weight: 500;
+  }
+
+  .price-row .service-duration {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+  }
+
+  .price-row .service-price {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  /* Gallery Grid */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--color-bg), #FFE4EF);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gallery-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 105, 180, 0.3), rgba(255, 215, 0, 0.2));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .gallery-item:hover::before {
+    opacity: 1;
+  }
+
+  .gallery-placeholder {
+    font-size: 4rem;
+    opacity: 0.5;
+  }
+
+  /* Contact Info */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .contact-card {
+    background: var(--color-white);
+    padding: 40px 30px;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+  }
+
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .contact-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+  }
+
+  .contact-card h4 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: var(--color-primary-dark);
+  }
+
+  .contact-card p {
+    color: var(--color-text-light);
+    font-size: 1rem;
+  }
+
+  /* Footer */
+  .footer {
+    background: linear-gradient(135deg, var(--color-primary-dark), #C4177A);
+    color: var(--color-white);
+    padding: 80px 24px 30px;
+    margin-top: auto;
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 50px;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+  }
+
+  .footer-logo .logo {
+    font-size: 2rem;
+    color: var(--color-white);
+  }
+
+  .footer-logo p {
+    margin-top: 16px;
+    opacity: 0.8;
+    font-size: 0.95rem;
+  }
+
+  .footer h4 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  .footer-info p, .footer-links a {
+    display: block;
+    opacity: 0.8;
+    margin-bottom: 10px;
+    transition: opacity 0.3s ease;
+  }
+
+  .footer-links a:hover {
+    opacity: 1;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+
+  /* Booking Section */
+  .booking-section {
+    background: linear-gradient(135deg, var(--color-bg) 0%, #FFE4EF 100%);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+
+    .mobile-menu-btn {
+      display: flex;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.2rem;
+    }
+
+    .section {
+      padding: 60px 24px;
+    }
+  }
+
+  /* Animations */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+</style>

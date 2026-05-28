@@ -1,0 +1,78 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const services = [
+  { icon: "💅", name: "Маникюр", desc: "Классический, аппаратный, комбинированный", price: "от 1500 ₽" },
+  { icon: "✨", name: "Покрытие", desc: "Гель-лак, френч, дизайн", price: "от 1000 ₽" },
+  { icon: "💎", name: "Наращивание", desc: "Гель, акригель, коррекция", price: "от 2500 ₽" },
+  { icon: "🌟", name: "Дизайн", desc: "Арт-дизайн, стразы, слайдеры", price: "от 500 ₽" }
+];
+---
+
+<Layout title="Главная">
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="fade-in">GLAM nails</h1>
+      <p class="fade-in stagger-1">Профессиональный маникюр и nail-art в салоне премиум-класса</p>
+      <div class="hero-buttons fade-in stagger-2">
+        <a href="/booking" class="btn btn-primary">Записаться онлайн</a>
+        <a href="/services" class="btn btn-secondary">Наши услуги</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="section-header">
+      <h2>Наши услуги</h2>
+      <p>Мы предлагаем полный спектр услуг по уходу за ногтями</p>
+    </div>
+    <div class="services-grid">
+      {services.map((service, index) => (
+        <div class={`service-card fade-in stagger-${index + 1}`}>
+          <div class="service-icon">{service.icon}</div>
+          <h3>{service.name}</h3>
+          <p>{service.desc}</p>
+          <div class="service-price">{service.price}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section cta-section">
+    <div class="container">
+      <h2>Готова к преображению?</h2>
+      <p>Запишитесь прямо сейчас и получите 10% скидку на первый визит!</p>
+      <a href="/booking" class="btn btn-primary">Записаться онлайн</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .cta-section {
+    background: linear-gradient(135deg, var(--color-primary-dark), #C4177A);
+    text-align: center;
+    color: white;
+  }
+
+  .cta-section h2 {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+  }
+
+  .cta-section .btn-primary {
+    background: white;
+    color: var(--color-primary-dark);
+  }
+
+  .cta-section .btn-primary:hover {
+    background: var(--color-gold);
+    color: var(--color-primary-dark);
+  }
+</style>

@@ -1,0 +1,16 @@
+{
+  "name": "glam-nails-salon",
+  "version": "1.0.0",
+  "description": "Nail salon website with JAMstack architecture",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "start:backend": "cd backend && npm start",
+    "test:backend": "cd backend && npm test"
+  },
+  "keywords": ["nail-salon", "astro", "express", "jamstack"],
+  "author": "",
+  "license": "ISC"
+}
