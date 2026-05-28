@@ -3,11 +3,7 @@ import DatePicker from './DatePicker';
 import TimeSlots from './TimeSlots';
 import BookingForm from './BookingForm';
 
-interface BookingPageProps {
-  apiBaseUrl: string;
-}
-
-export default function BookingPage({ apiBaseUrl }: BookingPageProps) {
+export default function BookingPage({ apiBaseUrl }) {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [bookingId, setBookingId] = useState('');
@@ -17,7 +13,7 @@ export default function BookingPage({ apiBaseUrl }: BookingPageProps) {
     setSelectedTime('');
   }, [selectedDate]);
 
-  const handleBookingSuccess = (id: string) => {
+  const handleBookingSuccess = (id) => {
     setBookingId(id);
   };
 
