@@ -7,6 +7,7 @@ export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
+  const [apiKey, setApiKey] = useState('');
   
   // Data states
   const [services, setServices] = useState([]);
@@ -34,6 +35,7 @@ export default function AdminPanel() {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (password === 'admin123') {
+      setApiKey(password);
       setIsAuthenticated(true);
       setAuthError('');
     } else {
@@ -45,6 +47,11 @@ export default function AdminPanel() {
     setLoading(true);
     setError('');
     try {
+      const headers = {};
+      if (activeTab === 'bookings') {
+        headers['X-Admin-Api-Key'] = apiKey;
+      }
+
       switch (activeTab) {
         case 'services':
           const servicesRes = await fetch(`${API_BASE}/api/services`);
@@ -61,7 +68,12 @@ export default function AdminPanel() {
           setGallery(await galleryRes.json());
           break;
         case 'bookings':
-          const bookingsRes = await fetch(`${API_BASE}/api/admin/bookings`);
+          const bookingsRes = await fetch(`${API_BASE}/api/admin/bookings`, { headers });
+          if (bookingsRes.status === 401) {
+            setError('Не авторизован. Обновите страницу и введите пароль заново.');
+            setIsAuthenticated(false);
+            return;
+          }
           setBookings(await bookingsRes.json());
           break;
       }
@@ -197,11 +209,19 @@ export default function AdminPanel() {
   const handleUpdateBookingStatus = async (id, status) => {
     setLoading(true);
     try {
-      await fetch(`${API_BASE}/api/admin/bookings/${id}/status`, {
+      const res = await fetch(`${API_BASE}/api/admin/bookings/${id}/status`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Admin-Api-Key': apiKey
+        },
         body: JSON.stringify({ status })
       });
+      if (res.status === 401) {
+        setError('Не авторизован');
+        setIsAuthenticated(false);
+        return;
+      }
       setSuccess('Статус обновлён');
       loadData();
     } catch (err) {

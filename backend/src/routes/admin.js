@@ -1,7 +1,23 @@
 import { Router } from 'express';
 import { getAllBookings, updateBookingStatus } from '../db/database.js';
 
+const ADMIN_API_KEY = process.env.ADMIN_API_KEY || 'admin123';
+
+// Simple API key authentication middleware
+function requireAdminAuth(req, res, next) {
+  const apiKey = req.headers['x-admin-api-key'];
+  
+  if (!apiKey || apiKey !== ADMIN_API_KEY) {
+    return res.status(401).json({ error: 'Не авторизован' });
+  }
+  
+  next();
+}
+
 const router = Router();
+
+// Apply auth middleware to all routes
+router.use(requireAdminAuth);
 
 // GET /api/admin/bookings - Get all bookings
 router.get('/bookings', (req, res) => {
