@@ -1,6 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PriceList from '../components/PriceList.jsx';
+
+// Получаем услуги из API на build-time
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001';
+
+let priceList: { category: string; services: any[] }[] = [];
+try {
+  const res = await fetch(`${API_URL}/api/services/grouped`);
+  if (res.ok) {
+    const grouped = await res.json();
+    priceList = Object.entries(grouped).map(([category, services]) => ({
+      category,
+      services
+    }));
+  }
+} catch (e) {
+  console.warn('Failed to fetch services from API');
+}
 ---
 
 <Layout title="Прайс-лист" description="Актуальные цены на услуги маникюрного салона GLAM nails">
@@ -13,7 +29,28 @@ import PriceList from '../components/PriceList.jsx';
 
   <section class="section">
     <div class="container">
-      <PriceList client:load />
+      <div class="price-tables">
+        {priceList.length > 0 ? (
+          priceList.map((item, index) => (
+            <div class="price-table-section fade-in" style={`animation-delay: ${index * 0.1}s`}>
+              <h2 class="table-title">{item.category}</h2>
+              <div class="price-table">
+                {item.services.map((service) => (
+                  <div class="price-row">
+                    <div class="price-details">
+                      <span class="service-name">{service.name}</span>
+                      <span class="service-duration">{service.duration} мин</span>
+                    </div>
+                    <span class="service-price">{service.price} ₽</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        ) : (
+          <div class="loading-fallback">Загрузка прайс-листа...</div>
+        )}
+      </div>
     </div>
   </section>
 
@@ -45,6 +82,72 @@ import PriceList from '../components/PriceList.jsx';
     color: var(--color-text-light);
   }
 
+  .price-tables {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .price-table-section {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  .table-title {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: white;
+    padding: 20px 30px;
+    font-size: 1.5rem;
+  }
+
+  .price-table {
+    padding: 10px 0;
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 30px;
+    border-bottom: 1px solid rgba(255, 105, 180, 0.1);
+    transition: background 0.3s ease;
+  }
+
+  .price-row:hover {
+    background: var(--color-bg);
+  }
+
+  .price-row:last-child {
+    border-bottom: none;
+  }
+
+  .price-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .service-name {
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .service-duration {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+  }
+
+  .service-price {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-gold);
+  }
+
   .note-section {
     background: var(--color-bg);
   }
@@ -63,5 +166,11 @@ import PriceList from '../components/PriceList.jsx';
 
   .note p:last-child {
     margin-bottom: 0;
+  }
+
+  .loading-fallback {
+    text-align: center;
+    padding: 60px;
+    color: var(--color-text-light);
   }
 </style>

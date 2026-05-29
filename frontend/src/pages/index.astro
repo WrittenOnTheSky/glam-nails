@@ -1,13 +1,41 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const services = [
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001';
+
+let services: any[] = [];
+try {
+  const res = await fetch(`${API_URL}/api/services`);
+  if (res.ok) services = await res.json();
+} catch (e) {
+  console.warn('Failed to fetch services from API');
+}
+
+const categoryIcons: Record<string, string> = {
+  'Маникюр': '💅',
+  'Покрытие': '✨',
+  'Наращивание': '💎',
+  'Дизайн': '🌟',
+  'Уход и SPA': '🧴',
+};
+
+// Берём по одному сервису из каждой категории для главной
+const seenCategories = new Set<string>();
+const mainServices: any[] = [];
+for (const s of services) {
+  if (!seenCategories.has(s.category)) {
+    seenCategories.add(s.category);
+    mainServices.push({ ...s, icon: categoryIcons[s.category] || '📌' });
+  }
+  if (mainServices.length >= 4) break;
+}
+
+const heroes = [
   { icon: "💅", name: "Маникюр", desc: "Классический, аппаратный, комбинированный", price: "от 1500 ₽" },
   { icon: "✨", name: "Покрытие", desc: "Гель-лак, френч, дизайн", price: "от 1000 ₽" },
   { icon: "💎", name: "Наращивание", desc: "Гель, акригель, коррекция", price: "от 2500 ₽" },
   { icon: "🌟", name: "Дизайн", desc: "Арт-дизайн, стразы, слайдеры", price: "от 500 ₽" }
 ];
----
 
 <Layout title="Главная">
   <section class="hero">
@@ -27,12 +55,12 @@ const services = [
       <p>Мы предлагаем полный спектр услуг по уходу за ногтями</p>
     </div>
     <div class="services-grid">
-      {services.map((service, index) => (
+      {heroes.map((service, index) => (
         <div class={`service-card fade-in stagger-${index + 1}`}>
           <div class="service-icon">{service.icon}</div>
           <h3>{service.name}</h3>
           <p>{service.desc}</p>
-          <div class="service-price">{service.price}</div>
+          <a href="/services" class="service-price">{service.price}</a>
         </div>
       ))}
     </div>

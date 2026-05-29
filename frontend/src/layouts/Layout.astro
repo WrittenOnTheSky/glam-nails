@@ -1,6 +1,4 @@
 ---
-import Footer from '../components/Footer.jsx';
-
 interface Props {
   title: string;
   description?: string;
@@ -18,10 +16,35 @@ const { title, description = "Салон маникюра премиум-кла�
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <title>{title} | GLAM nails</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NailSalon",
+    "name": "GLAM nails",
+    "description": "Профессиональный маникюр и nail-art в салоне премиум-класса",
+    "url": "https://glamnails.ru",
+    "telephone": "+799****4567",
+    "email": "hello@glamnails.ru",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ул. Красивая, 15",
+      "addressLocality": "Москва",
+      "addressCountry": "RU"
+    },
+    "openingHours": "Mo-Su 10:00-20:00",
+    "priceRange": "₽₽"
+  }
+  </script>
 </head>
 <body>
   <header class="header">
@@ -82,7 +105,32 @@ const { title, description = "Салон маникюра премиум-кла�
     <slot />
   </main>
 
-  <Footer client:load />
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <span class="logo">GLAM<span>nails</span></span>
+          <p>Салон маникюра премиум-класса в самом сердце города</p>
+        </div>
+        <div class="footer-info">
+          <h4>Контакты</h4>
+          <p>📍 ул. Красивая, 15</p>
+          <p>📞 <a href="tel:+79991234567">+79991234567</a></p>
+          <p>🕐 10:00 - 20:00</p>
+        </div>
+        <div class="footer-links">
+          <h4>Навигация</h4>
+          <a href="/services">Услуги</a>
+          <a href="/price">Прайс-лист</a>
+          <a href="/gallery">Галерея</a>
+          <a href="/booking">Онлайн-запись</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© {new Date().getFullYear()} GLAM nails. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
 

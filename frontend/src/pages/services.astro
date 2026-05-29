@@ -1,6 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ServicesList from '../components/ServicesList.jsx';
+
+// Получаем услуги из API на build-time
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001';
+
+let services: Record<string, any[]> = {};
+try {
+  const res = await fetch(`${API_URL}/api/services/grouped`);
+  if (res.ok) services = await res.json();
+} catch (e) {
+  console.warn('Failed to fetch services from API, using fallback');
+}
+
+const categoryIcons: Record<string, string> = {
+  'Маникюр': '💅',
+  'Покрытие': '✨',
+  'Наращивание': '💎',
+  'Дизайн': '🌟',
+  'Уход и SPA': '🧴',
+};
+
+const categoryDescs: Record<string, string> = {
+  'Маникюр': 'Профессиональный маникюр любой сложности',
+  'Покрытие': 'Идеальное покрытие на долгое время',
+  'Наращивание': 'Красивые и прочные ногти',
+  'Дизайн': 'Уникальный nail-art для вас',
+  'Уход и SPA': 'Полный уход за вашими руками',
+};
 ---
 
 <Layout title="Услуги" description="Полный спектр услуг маникюрного салона: маникюр, наращивание, дизайн, уход за ногтями">
@@ -13,7 +39,32 @@ import ServicesList from '../components/ServicesList.jsx';
 
   <section class="section">
     <div class="container">
-      <ServicesList client:load />
+      {Object.entries(services).length > 0 ? (
+        Object.entries(services).map(([category, items], index) => (
+          <div class="service-category fade-in" style={`animation-delay: ${index * 0.1}s`}>
+            <div class="category-header">
+              <span class="category-icon">{categoryIcons[category] || '📌'}</span>
+              <div>
+                <h2>{category}</h2>
+                <p>{categoryDescs[category] || ''}</p>
+              </div>
+            </div>
+            <div class="category-grid">
+              {(items as any[]).map((option) => (
+                <div class="option-card">
+                  <div class="option-info">
+                    <h4>{option.name}</h4>
+                    <span class="option-duration">{option.duration} мин</span>
+                  </div>
+                  <div class="option-price">{option.price} ₽</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      ) : (
+        <div class="loading-fallback">Загрузка услуг...</div>
+      )}
     </div>
   </section>
 
@@ -44,6 +95,83 @@ import ServicesList from '../components/ServicesList.jsx';
     color: var(--color-text-light);
   }
 
+  .service-category {
+    max-width: 1000px;
+    margin: 0 auto 60px;
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 105, 180, 0.2);
+  }
+
+  .category-icon {
+    font-size: 3rem;
+  }
+
+  .category-header h2 {
+    font-size: 1.8rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 4px;
+  }
+
+  .category-header p {
+    color: var(--color-text-light);
+  }
+
+  .category-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .option-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+  }
+
+  .option-card:hover {
+    transform: translateX(10px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .option-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .option-info h4 {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--color-text);
+  }
+
+  .option-duration {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    background: var(--color-bg);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .option-price {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-gold);
+  }
+
   .cta-section {
     background: linear-gradient(135deg, var(--color-primary-dark), #C4177A);
     text-align: center;
@@ -65,5 +193,11 @@ import ServicesList from '../components/ServicesList.jsx';
   .cta-section .btn-primary {
     background: white;
     color: var(--color-primary-dark);
+  }
+
+  .loading-fallback {
+    text-align: center;
+    padding: 60px;
+    color: var(--color-text-light);
   }
 </style>

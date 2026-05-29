@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createBooking, getBookingById, getServiceById } from '../db/database.js';
+import { createBooking, getBookingById, getServiceById, cancelBooking } from '../db/database.js';
 
 const router = Router();
 
@@ -39,7 +39,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/bookings - Create new booking
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   try {
     const { clientName, phone, serviceId, date, time } = req.body;
     
@@ -94,6 +94,20 @@ router.post('/', async (req, res) => {
     });
   } catch (error) {
     console.error('Error creating booking:', error);
+    res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+  }
+});
+
+// DELETE /api/bookings/:id - Cancel booking
+router.delete('/:id', (req, res) => {
+  try {
+    const result = cancelBooking(req.params.id);
+    if (!result.success) {
+      return res.status(404).json({ error: result.error });
+    }
+    res.json({ success: true, message: 'Запись отменена' });
+  } catch (error) {
+    console.error('Error cancelling booking:', error);
     res.status(500).json({ error: 'Внутренняя ошибка сервера' });
   }
 });
