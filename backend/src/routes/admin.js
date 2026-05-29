@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { getAllBookings, updateBookingStatus } from '../db/database.js';
+import { getAllBookings, updateBookingStatus, getBookingById } from '../db/database.js';
+import db from '../db/database.js';
 
 const ADMIN_API_KEY = process.env.ADMIN_API_KEY || 'admin123';
 
@@ -35,9 +36,9 @@ router.put('/bookings/:id/status', (req, res) => {
   try {
     const { status } = req.body;
     
-    const validStatuses = ['confirmed', 'cancelled', 'completed'];
+    const validStatuses = ['confirmed', 'completed'];
     if (!status || !validStatuses.includes(status)) {
-      return res.status(400).json({ error: 'Укажите корректный статус: confirmed, cancelled, completed' });
+      return res.status(400).json({ error: 'Укажите корректный статус: confirmed, completed' });
     }
     
     const booking = updateBookingStatus(req.params.id, status);
@@ -47,6 +48,24 @@ router.put('/bookings/:id/status', (req, res) => {
     res.json(booking);
   } catch (error) {
     console.error('Error updating booking status:', error);
+    res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+  }
+});
+
+// DELETE /api/admin/bookings/:id - Cancel/delete a booking
+router.delete('/bookings/:id', (req, res) => {
+  try {
+    const booking = getBookingById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ error: 'Бронирование не найдено' });
+    }
+    
+    // Delete the booking to free up the slot
+    db.prepare('DELETE FROM bookings WHERE id = ?').run(req.params.id);
+    
+    res.json({ success: true, message: 'Бронирование отменено' });
+  } catch (error) {
+    console.error('Error cancelling booking:', error);
     res.status(500).json({ error: 'Внутренняя ошибка сервера' });
   }
 });

@@ -230,6 +230,28 @@ export default function AdminPanel() {
     setLoading(false);
   };
 
+  const handleCancelBooking = async (id) => {
+    if (!confirm('Отменить бронирование? Время снова станет доступным для записи.')) return;
+    
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/bookings/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-Admin-Api-Key': apiKey }
+      });
+      if (res.status === 401) {
+        setError('Не авторизован');
+        setIsAuthenticated(false);
+        return;
+      }
+      setSuccess('Бронирование отменено');
+      loadData();
+    } catch (err) {
+      setError(err.message);
+    }
+    setLoading(false);
+  };
+
   // Login screen
   if (!isAuthenticated) {
     return (
@@ -552,7 +574,7 @@ export default function AdminPanel() {
                     <span>{booking.service_name} — {booking.service_price} ₽</span>
                     <span>{booking.date} в {booking.time}</span>
                   </div>
-                  <div className="booking-status">
+                  <div className="booking-actions">
                     <select
                       value={booking.status}
                       onChange={(e) => handleUpdateBookingStatus(booking.id, e.target.value)}
@@ -560,8 +582,14 @@ export default function AdminPanel() {
                     >
                       <option value="confirmed">✅ Подтверждено</option>
                       <option value="completed">✔️ Завершено</option>
-                      <option value="cancelled">❌ Отменено</option>
                     </select>
+                    <button 
+                      onClick={() => handleCancelBooking(booking.id)}
+                      className="btn-cancel"
+                      title="Отменить бронирование"
+                    >
+                      ❌
+                    </button>
                   </div>
                 </div>
               ))}
@@ -771,9 +799,32 @@ export default function AdminPanel() {
           cursor: pointer;
           font-size: 0.9rem;
         }
+        .booking-actions {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+        .booking-actions select {
+          padding: 8px 12px;
+          border-radius: 6px;
+          border: 2px solid;
+          cursor: pointer;
+          font-size: 0.9rem;
+        }
         .status-confirmed { border-color: #4caf50; background: #e8f5e9; color: #2e7d32; }
         .status-completed { border-color: #2196f3; background: #e3f2fd; color: #1565c0; }
-        .status-cancelled { border-color: #f44336; background: #ffebee; color: #c62828; }
+        .btn-cancel {
+          background: #ffebee;
+          border: 2px solid #f44336;
+          border-radius: 6px;
+          padding: 8px 12px;
+          cursor: pointer;
+          font-size: 1rem;
+          transition: all 0.2s;
+        }
+        .btn-cancel:hover {
+          background: #f44336;
+        }
         
         .empty { text-align: center; color: #999; padding: 40px; }
         
