@@ -1,45 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const priceList = [
-  { category: "Маникюр", services: [
-    { name: "Классический маникюр", price: 1500, duration: 60 },
-    { name: "Аппаратный маникюр", price: 1800, duration: 60 },
-    { name: "Комбинированный маникюр", price: 2000, duration: 75 },
-    { name: "Маникюр с покрытием", price: 2200, duration: 90 }
-  ]},
-  { category: "Покрытие", services: [
-    { name: "Гель-лак (однотонный)", price: 1200, duration: 45 },
-    { name: "Френч классический", price: 1500, duration: 60 },
-    { name: "Лунный маникюр", price: 1500, duration: 60 },
-    { name: "Градиент/омбре", price: 1800, duration: 60 },
-    { name: "Снятие покрытия", price: 500, duration: 30 }
-  ]},
-  { category: "Наращивание", services: [
-    { name: "Наращивание гелем", price: 3000, duration: 120 },
-    { name: "Наращивание акригелем", price: 3500, duration: 120 },
-    { name: "Коррекция ногтей", price: 2500, duration: 90 },
-    { name: "Ремонт ногтя", price: 300, duration: 15 }
-  ]},
-  { category: "Дизайн", services: [
-    { name: "Простой дизайн", price: 500, duration: 30 },
-    { name: "Сложный дизайн", price: 1000, duration: 60 },
-    { name: "Стразы (до 10 шт.)", price: 400, duration: 15 },
-    { name: "Стразы (более 10 шт.)", price: 800, duration: 30 },
-    { name: "Слайдеры", price: 300, duration: 15 },
-    { name: "Живопись/инкрустация", price: 1500, duration: 60 }
-  ]},
-  { category: "Уход и SPA", services: [
-    { name: "Парафинотерапия", price: 800, duration: 30 },
-    { name: "Спа-маникюр", price: 2500, duration: 90 },
-    { name: "Массаж рук", price: 500, duration: 20 }
-  ]},
-  { category: "Педикюр", services: [
-    { name: "Обработка стопы", price: 2000, duration: 60 },
-    { name: "Педикюр с покрытием", price: 3000, duration: 90 },
-    { name: "Спа-педикюр", price: 3500, duration: 120 }
-  ]}
-];
+import PriceList from '../components/PriceList.jsx';
 ---
 
 <Layout title="Прайс-лист" description="Актуальные цены на услуги маникюрного салона GLAM nails">
@@ -52,24 +13,7 @@ const priceList = [
 
   <section class="section">
     <div class="container">
-      <div class="price-tables">
-        {priceList.map((item, index) => (
-          <div class="price-table-section fade-in" style={`animation-delay: ${index * 0.1}s`}>
-            <h2 class="table-title">{item.category}</h2>
-            <div class="price-table">
-              {item.services.map((service) => (
-                <div class="price-row">
-                  <div class="price-details">
-                    <span class="service-name">{service.name}</span>
-                    <span class="service-duration">{service.duration} мин</span>
-                  </div>
-                  <span class="service-price">{service.price} ₽</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
+      <PriceList client:load />
     </div>
   </section>
 
@@ -99,72 +43,6 @@ const priceList = [
   .page-header p {
     font-size: 1.1rem;
     color: var(--color-text-light);
-  }
-
-  .price-tables {
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-  }
-
-  .price-table-section {
-    background: white;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-  }
-
-  .table-title {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-    color: white;
-    padding: 20px 30px;
-    font-size: 1.5rem;
-  }
-
-  .price-table {
-    padding: 10px 0;
-  }
-
-  .price-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 30px;
-    border-bottom: 1px solid rgba(255, 105, 180, 0.1);
-    transition: background 0.3s ease;
-  }
-
-  .price-row:hover {
-    background: var(--color-bg);
-  }
-
-  .price-row:last-child {
-    border-bottom: none;
-  }
-
-  .price-details {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .service-name {
-    font-weight: 500;
-    color: var(--color-text);
-  }
-
-  .service-duration {
-    font-size: 0.85rem;
-    color: var(--color-text-light);
-  }
-
-  .service-price {
-    font-family: var(--font-heading);
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--color-gold);
   }
 
   .note-section {

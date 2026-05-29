@@ -1,64 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const services = [
-  { 
-    icon: "💅", 
-    name: "Маникюр", 
-    desc: "Профессиональный маникюр любой сложности", 
-    options: [
-      { name: "Классический маникюр", price: 1500, duration: 60 },
-      { name: "Аппаратный маникюр", price: 1800, duration: 60 },
-      { name: "Комбинированный маникюр", price: 2000, duration: 75 },
-      { name: "Снятие покрытия", price: 500, duration: 30 }
-    ]
-  },
-  { 
-    icon: "✨", 
-    name: "Покрытие", 
-    desc: "Идеальное покрытие на долгое время",
-    options: [
-      { name: "Гель-лак (однотонный)", price: 1200, duration: 45 },
-      { name: "Френч", price: 1500, duration: 60 },
-      { name: "Лунный маникюр", price: 1500, duration: 60 },
-      { name: "Градиент/омбре", price: 1800, duration: 60 }
-    ]
-  },
-  { 
-    icon: "💎", 
-    name: "Наращивание", 
-    desc: "Красивые и прочные ногти",
-    options: [
-      { name: "Наращивание гелем", price: 3000, duration: 120 },
-      { name: "Наращивание акригелем", price: 3500, duration: 120 },
-      { name: "Коррекция ногтей", price: 2500, duration: 90 },
-      { name: "Ремонт ногтя", price: 300, duration: 15 }
-    ]
-  },
-  { 
-    icon: "🌟", 
-    name: "Дизайн", 
-    desc: "Уникальный nail-art для вас",
-    options: [
-      { name: "Простой дизайн (роспись)", price: 500, duration: 30 },
-      { name: "Сложный дизайн", price: 1000, duration: 60 },
-      { name: "Стразы (до 10 шт.)", price: 400, duration: 15 },
-      { name: "Стразы (более 10 шт.)", price: 800, duration: 30 },
-      { name: "Слайдеры", price: 300, duration: 15 },
-      { name: "Живопись/инкрустация", price: 1500, duration: 60 }
-    ]
-  },
-  { 
-    icon: "🧴", 
-    name: "Уход и SPA", 
-    desc: "Полный уход за вашими руками",
-    options: [
-      { name: "Парафинотерапия", price: 800, duration: 30 },
-      { name: "Спа-маникюр", price: 2500, duration: 90 },
-      { name: "Массаж рук", price: 500, duration: 20 }
-    ]
-  }
-];
+import ServicesList from '../components/ServicesList.jsx';
 ---
 
 <Layout title="Услуги" description="Полный спектр услуг маникюрного салона: маникюр, наращивание, дизайн, уход за ногтями">
@@ -71,28 +13,7 @@ const services = [
 
   <section class="section">
     <div class="container">
-      {services.map((category, index) => (
-        <div class="service-category fade-in" style={`animation-delay: ${index * 0.1}s`}>
-          <div class="category-header">
-            <span class="category-icon">{category.icon}</span>
-            <div>
-              <h2>{category.name}</h2>
-              <p>{category.desc}</p>
-            </div>
-          </div>
-          <div class="category-grid">
-            {category.options.map((option) => (
-              <div class="option-card">
-                <div class="option-info">
-                  <h4>{option.name}</h4>
-                  <span class="option-duration">{option.duration} мин</span>
-                </div>
-                <div class="option-price">{option.price} ₽</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
+      <ServicesList client:load />
     </div>
   </section>
 
@@ -121,83 +42,6 @@ const services = [
   .page-header p {
     font-size: 1.1rem;
     color: var(--color-text-light);
-  }
-
-  .service-category {
-    max-width: 1000px;
-    margin: 0 auto 60px;
-  }
-
-  .category-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid rgba(255, 105, 180, 0.2);
-  }
-
-  .category-icon {
-    font-size: 3rem;
-  }
-
-  .category-header h2 {
-    font-size: 1.8rem;
-    color: var(--color-primary-dark);
-    margin-bottom: 4px;
-  }
-
-  .category-header p {
-    color: var(--color-text-light);
-  }
-
-  .category-grid {
-    display: grid;
-    gap: 16px;
-  }
-
-  .option-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    background: white;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
-  }
-
-  .option-card:hover {
-    transform: translateX(10px);
-    box-shadow: var(--shadow-md);
-  }
-
-  .option-info {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .option-info h4 {
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 1rem;
-    color: var(--color-text);
-  }
-
-  .option-duration {
-    font-size: 0.85rem;
-    color: var(--color-text-light);
-    background: var(--color-bg);
-    padding: 4px 12px;
-    border-radius: 20px;
-  }
-
-  .option-price {
-    font-family: var(--font-heading);
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--color-gold);
   }
 
   .cta-section {

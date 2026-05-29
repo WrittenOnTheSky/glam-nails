@@ -1,4 +1,6 @@
 ---
+import Footer from '../components/Footer.jsx';
+
 interface Props {
   title: string;
   description?: string;
@@ -45,32 +47,7 @@ const { title, description = "Салон маникюра премиум-кла�
     <slot />
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <span class="logo">GLAM<span>nails</span></span>
-          <p>Салон маникюра премиум-класса в самом сердце города</p>
-        </div>
-        <div class="footer-info">
-          <h4>Контакты</h4>
-          <p>📍 ул. Красивая, 15</p>
-          <p>📞 +7 (999) 123-45-67</p>
-          <p>🕐 10:00 - 20:00</p>
-        </div>
-        <div class="footer-links">
-          <h4>Навигация</h4>
-          <a href="/services">Услуги</a>
-          <a href="/price">Прайс-лист</a>
-          <a href="/gallery">Галерея</a>
-          <a href="/booking">Онлайн-запись</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2024 GLAM nails. Все права защищены.</p>
-      </div>
-    </div>
-  </footer>
+  <Footer client:load />
 </body>
 </html>
 
