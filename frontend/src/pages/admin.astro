@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AdminPanel from '../components/AdminPanel.jsx';
+---
+
+<Layout title="Админ-панель" description="Управление контентом сайта GLAM nails">
+  <section class="admin-section">
+    <AdminPanel client:load />
+  </section>
+</Layout>
+
+<style>
+  .admin-section {
+    min-height: calc(100vh - 200px);
+    padding-top: 100px;
+    background: var(--color-bg);
+  }
+</style>

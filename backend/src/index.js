@@ -7,6 +7,9 @@ import { fileURLToPath } from 'url';
 import servicesRouter from './routes/services.js';
 import slotsRouter from './routes/slots.js';
 import bookingsRouter from './routes/bookings.js';
+import contactsRouter from './routes/contacts.js';
+import galleryRouter from './routes/gallery.js';
+import adminRouter from './routes/admin.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3001;
@@ -22,6 +25,9 @@ app.use(express.json());
 app.use('/api/services', servicesRouter);
 app.use('/api/available-slots', slotsRouter);
 app.use('/api/bookings', bookingsRouter);
+app.use('/api/contacts', contactsRouter);
+app.use('/api/gallery', galleryRouter);
+app.use('/api/admin', adminRouter);
 
 // Health check
 app.get('/health', (req, res) => {
